@@ -30,10 +30,10 @@ class PyVault(object):
     def is_locked(self):
         return self._locked
 
-    def get(self, id):
+    def retrieve(self, id):
         pass
 
-    def set(self, id, payload, cipher="default"):
+    def store(self, id, payload, cipher="default"):
         pass
 
     def create(self, passphrase):
