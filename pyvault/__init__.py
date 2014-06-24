@@ -1,8 +1,10 @@
 #-*- coding: utf-8 -*-
 
 import os
+
 from pyvault.meta import PyVaultMeta
 from pyvault.string import PyVaultString
+from pyvault.store import PyVaultStore
 
 class PyVaultUnlockError(Exception):
     pass
@@ -34,7 +36,8 @@ class PyVault(object):
         pass
 
     def store(self, id, payload, cipher="default"):
-        pass
+        storage = PyVaultStore(self._path, id)
+        storage.store(str(self._masterkey), payload)
 
     def create(self, passphrase):
         self._meta.create(passphrase)
