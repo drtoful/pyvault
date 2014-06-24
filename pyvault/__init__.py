@@ -33,7 +33,8 @@ class PyVault(object):
         return self._locked
 
     def retrieve(self, id):
-        pass
+        storage = PyVaultStore(self._path, id)
+        return storage.retrieve(str(self._masterkey))
 
     def store(self, id, payload, cipher="default"):
         storage = PyVaultStore(self._path, id)
