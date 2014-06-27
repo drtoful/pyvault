@@ -29,7 +29,7 @@ class PyVaultMeta(object):
         except ValueError:
             return False
 
-    def create(self, passphrase):
+    def create(self, passphrase, complexity=12):
         if os.path.isfile(self.file):
             raise PyVaultMetaInitError()
 
@@ -37,7 +37,7 @@ class PyVaultMeta(object):
             version = 1,
             passdigest = bcrypt.hashpw(
                 passphrase.encode('utf-8'),
-                bcrypt.gensalt(12)
+                bcrypt.gensalt(complexity)
             )
         )
 
