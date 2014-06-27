@@ -1,10 +1,12 @@
 #-*- coding: utf-8 -*-
 
 import os
+import SecureString
 
 from pyvault.meta import PyVaultMeta
 from pyvault.string import PyVaultString
 from pyvault.store import PyVaultStore
+from pbkdf2 import PBKDF2
 
 class PyVaultUnlockError(Exception):
     pass
@@ -16,12 +18,23 @@ class PyVault(object):
         self._locked = True
         self._masterkey = None
 
-    def unlock(self, passphrase):
+    def unlock(self, passphrase, cleanup=True):
         if not self._meta.verify(passphrase):
             raise PyVaultUnlockError()
 
         self._locked = False
-        self._masterkey = PyVaultString(passphrase)
+        # derive masterkey from passphrase and salt
+        # of vault (256bit key)
+        self._masterkey = PyVaultString(
+            PBKDF2(
+                passphrase, self._meta.salt,
+                iterations=self._meta.iterations
+            ).read(64)
+        )
+
+        if cleanup:
+            SecureString.clearmem(passphrase)
+
 
     def lock(self):
         self._locked = True
@@ -40,5 +53,5 @@ class PyVault(object):
         storage = PyVaultStore(self._path, id)
         storage.store(str(self._masterkey), payload)
 
-    def create(self, passphrase):
-        self._meta.create(passphrase)
+    def create(self, passphrase, complexity=12, iterations=5000):
+        self._meta.create(passphrase, complexity, iterations)
