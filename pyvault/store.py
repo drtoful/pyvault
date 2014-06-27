@@ -136,6 +136,7 @@ class PyVaultStore(object):
         SecureString.clearmem(dig_key)
         SecureString.clearmem(pl_iv)
         SecureString.clearmem(dg_iv)
-        SecureString.clearmem(padded_payload)
+        if len(payload) % 16 > 0:
+            SecureString.clearmem(padded_payload)
 
 
