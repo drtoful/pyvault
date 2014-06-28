@@ -19,10 +19,8 @@ class PyVault(object):
         self._masterkey = None
 
     def unlock(self, passphrase, cleanup=True):
-        if not self._meta.verify(passphrase):
-            raise PyVaultUnlockError()
+        self._locked = not self._meta.verify(passphrase)
 
-        self._locked = False
         # derive masterkey from passphrase and salt
         # of vault (256bit key)
         self._masterkey = PyVaultString(
@@ -34,6 +32,9 @@ class PyVault(object):
 
         if cleanup:
             SecureString.clearmem(passphrase)
+
+        if self.is_locked():
+            raise PyVaultUnlockError()
 
 
     def lock(self):
