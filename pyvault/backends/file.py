@@ -2,14 +2,18 @@
 
 import os
 import json
-from backends import PyVaultBackend
+
+from pyvault.backends import PyVaultBackend
 
 class PyVaultFileBackend(PyVaultBackend):
     def __init__(self, path):
         self._path = path
 
     def create(self):
-        os.mkdirs(self._path, 0700)
+        try:
+            os.makedirs(self._path, 0700)
+        except OSError:
+            pass
 
     def set_meta(self, data):
         file = os.path.join(self._path, ".meta")
@@ -18,7 +22,7 @@ class PyVaultFileBackend(PyVaultBackend):
             raise ValueError
 
         with open(file, "w") as fp:
-            json.dump(fp)
+            json.dump(data, fp)
 
         os.chmod(file, 0600)
 
@@ -46,7 +50,7 @@ class PyVaultFileBackend(PyVaultBackend):
         file = os.path.join(self._path, key)
 
         with open(file, "w") as fp:
-            data = json.dump(fp)
+            data = json.dump(data, fp)
 
         os.chmod(file, 0600)
 

@@ -13,9 +13,9 @@ from pyvault.utils import constant_time_compare
 from pyvault.ciphers import cipher_manager
 
 class PyVaultStore(object):
-    def __init__(self, path, id):
-        digest = hashlib.sha512(str(id)).hexdigest()
-        self._file = os.path.join(path, digest)
+    def __init__(self, backend, id):
+        self._id = hashlib.sha512(str(id)).hexdigest()
+        self._backend = backend
 
     def retrieve(self, passphrase):
         def retrieve_key(data):
@@ -27,9 +27,7 @@ class PyVaultStore(object):
             )
             return (data['id'], message)
 
-        with open(self._file, "r") as fp:
-            data = json.load(fp)
-
+        data = self._backend.retrieve(self._id)
         keys = dict([retrieve_key(x) for x in data['keys']])
 
         # decrypt payload
@@ -124,8 +122,7 @@ class PyVaultStore(object):
             }
         }
 
-        with open(self._file, "w") as fp:
-            fp.write(json.dumps(data))
+        self._backend.store(self._id, data)
 
         # clear up memory
         SecureString.clearmem(enc_salt)

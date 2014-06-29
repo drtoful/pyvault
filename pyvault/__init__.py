@@ -12,9 +12,9 @@ class PyVaultUnlockError(Exception):
     pass
 
 class PyVault(object):
-    def __init__(self, path):
-        self._path = path
-        self._meta = PyVaultMeta(os.path.join(path, ".meta"))
+    def __init__(self, backend):
+        self._backend = backend
+        self._meta = PyVaultMeta(self._backend)
         self._locked = True
         self._masterkey = None
 
@@ -47,11 +47,11 @@ class PyVault(object):
         return self._locked
 
     def retrieve(self, id):
-        storage = PyVaultStore(self._path, id)
+        storage = PyVaultStore(self._backend, id)
         return storage.retrieve(str(self._masterkey))
 
     def store(self, id, payload, cipher="default"):
-        storage = PyVaultStore(self._path, id)
+        storage = PyVaultStore(self._backend, id)
         storage.store(str(self._masterkey), payload)
 
     def create(self, passphrase, complexity=12, iterations=5000):
