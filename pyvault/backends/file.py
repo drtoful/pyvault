@@ -6,6 +6,13 @@ import json
 from pyvault.backends import PyVaultBackend
 
 class PyVaultFileBackend(PyVaultBackend):
+    """
+        implements a flat file storage
+
+        :param path: a filesystem path to store all data
+                     under. metadata file is accessible as *.meta*.
+    """
+
     def __init__(self, path):
         self._path = path
 

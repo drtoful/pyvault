@@ -4,6 +4,14 @@ from pyvault.backends import PyVaultBackend
 from pymongo import MongoClient
 
 class PyVaultMongoBackend(PyVaultBackend):
+    """
+        implements a MonoDB backend
+
+        :param uri: a MongoURI that selects the database
+                    to store all data under. All data is stored
+                    in the collection *store*.
+    """
+
     def __init__(self, uri):
         self._db = MongoClient(uri)
         if isinstance(self._db, MongoClient):

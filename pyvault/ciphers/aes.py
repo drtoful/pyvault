@@ -3,6 +3,10 @@
 from Crypto.Cipher import AES
 
 class PyVaultCipherAES(object):
+    """
+        Implements AES cipher in CBC mode using a 256bit key.
+    """
+
     def __init__(self):
         pass
 
