@@ -22,6 +22,10 @@ class PyVaultMongoBackend(PyVaultBackend):
         self._db = getattr(self._db, collection)
         self._db.ensure_index("id", background=True)
 
+    def exists(self):
+        meta = self._db.find_one({"id": "_meta"})
+        return not meta is None
+
     def create(self):
         pass
 

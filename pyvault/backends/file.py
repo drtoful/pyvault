@@ -16,6 +16,10 @@ class PyVaultFileBackend(PyVaultBackend):
     def __init__(self, path):
         self._path = path
 
+    def exists(self):
+        file = os.path.join(self._path, ".meta")
+        return os.path.isfile(file)
+
     def create(self):
         try:
             os.makedirs(self._path, 0700)

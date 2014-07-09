@@ -3,6 +3,12 @@
 class PyVaultBackend(object):
     """Base class for all backend implementations"""
 
+    def exists(self):
+        """
+            :return: True if the secure storage exists, False othersie
+        """
+        pass
+
     def create(self):
         """
             initializes the secure storage and creates necessary

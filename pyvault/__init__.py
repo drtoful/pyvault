@@ -33,6 +33,12 @@ class PyVault(object):
         self._locked = True
         self._masterkey = None
 
+    def exists(self):
+        """
+            :return: True if the secure storage exists, False otherwise
+        """
+        return self._backend.exists()
+
     def unlock(self, passphrase, cleanup=True):
         """
             Unlocks the encrypted storage, so that future calls to
