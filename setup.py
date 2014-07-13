@@ -9,7 +9,8 @@ setup(
     install_requires=[
         'pycrypto >= 2.6',
         'SecureString >= 0.1',
-        'pbkdf2 >= 1.3'
+        'pbkdf2 >= 1.3',
+        'py-bcrypt >= 0.4',
     ],
 
     # package metadata
