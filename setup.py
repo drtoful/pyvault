@@ -11,6 +11,7 @@ setup(
         'SecureString >= 0.1',
         'pbkdf2 >= 1.3',
         'py-bcrypt >= 0.4',
+        'pairtree >= 0.5.2',
     ],
 
     # package metadata
