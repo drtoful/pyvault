@@ -128,7 +128,7 @@ class PyVault(object):
             :param cipher: select a cipher to encrypt the payload with
         """
         storage = PyVaultStore(self._backend, id)
-        storage.store(str(self._masterkey), payload)
+        storage.store(str(self._masterkey), payload, cipher)
 
     def create(self, passphrase, complexity=12, iterations=5000):
         """
