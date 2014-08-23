@@ -7,14 +7,8 @@ class _PyVaultCiphers(object):
     def __init__(self):
         self._ciphers = {}
 
-        try:
-            from pyvault.ciphers.aes import PyVaultCipherAES
-
-            cipher = PyVaultCipherAES()
-            self._ciphers["aes"] = cipher
-            self._ciphers["aes_cbc"] = cipher
-        except:
-            pass
+    def register(self, id, obj):
+        self._ciphers[id] = obj
 
     def get(self, cipher=None):
         if cipher is None:
@@ -25,5 +19,13 @@ class _PyVaultCiphers(object):
             raise PyVaultUnknownCipher(cipher)
         return c
 
-
 cipher_manager = _PyVaultCiphers()
+
+try:
+    from pyvault.ciphers.aes import PyVaultCipherAES
+
+    cipher = PyVaultCipherAES()
+    cipher_manager.register("aes", cipher)
+    cipher_manager.register("aes-cbc", cipher)
+except:
+    pass
