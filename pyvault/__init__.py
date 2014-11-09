@@ -119,16 +119,22 @@ class PyVault(object):
         storage = PyVaultStore(self._backend, id)
         return storage.retrieve(str(self._masterkey))
 
-    def store(self, id, payload, cipher="aes"):
+    def store(self, id, payload, cipher="aes", length=None):
         """
             :param id: a unique id to store this payload under.
             :param payload: the payload you want to store under ``id``. Has to
                             be a :py:class:`basestring` or can be converted to
                             one, when using ``str()``.
             :param cipher: select a cipher to encrypt the payload with
+
+            .. versionadded:: 0.2.1
+
+            :param length: length of the payload or None. If None is specified
+                           then the length will be computed using
+                           :py:func:`len()`.
         """
         storage = PyVaultStore(self._backend, id)
-        storage.store(str(self._masterkey), payload, cipher)
+        storage.store(str(self._masterkey), payload, cipher, length)
 
     def create(self, passphrase, complexity=12, iterations=5000):
         """

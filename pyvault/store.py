@@ -38,6 +38,22 @@ class PyVaultStore(object):
         )
         pl_dg = hashlib.sha512(payload).hexdigest()
 
+        # decrypt length
+        length = None
+        if not data['payload'].get('length', None) is None:
+            length = cipher_manager.get(data['payload']['cipher']).decrypt(
+                keys[data['payload']['key']], pl_iv,
+                base64.b64decode(data['payload']['length'])
+            )
+            length = int(length.strip('\x00'))
+
+        stored = payload
+        if length is None:
+            payload = stored.strip('\x00')
+        else:
+            payload = stored[:length]
+        SecureString.clearmem(stored)
+
         # decrypt digest
         dg_iv = base64.b64decode(data['digest']['iv'])
         digest = cipher_manager.get(data['digest']['cipher']).decrypt(
@@ -55,13 +71,15 @@ class PyVaultStore(object):
 
         return PyVaultString(payload)
 
-    def store(self, passphrase, payload, cipher=None):
+    def store(self, passphrase, payload, cipher=None, length=None):
         def pad_payload(payload):
             pad_length = 16 - (len(str(payload)) % 16)
             pad = "".join('\x00' for x in xrange(0, pad_length))
             return str(payload) + pad
 
         cipher = cipher_manager.get(cipher)
+        if length is None:
+            length = len(payload)
 
         # encryption key
         enc_salt = os.urandom(8) #64bit
@@ -81,6 +99,9 @@ class PyVaultStore(object):
         padded_payload = pad_payload(payload)
         pl_iv = os.urandom(16) #128bit
         pl_data = cipher.encrypt(enc_key, pl_iv, padded_payload)
+
+        padded_length = pad_payload(length)
+        pl_length = cipher.encrypt(enc_key, pl_iv, padded_length)
 
         # create digest and encrypt
         dg_iv = os.urandom(16) #128bit
@@ -108,7 +129,8 @@ class PyVaultStore(object):
                 'key': "encryption",
                 'iv': base64.b64encode(pl_iv),
                 'cipher': cipher.id,
-                'data': base64.b64encode(pl_data)
+                'data': base64.b64encode(pl_data),
+                'length': base64.b64encode(pl_length)
             },
             'digest': {
                 'key': "digest",
@@ -129,5 +151,6 @@ class PyVaultStore(object):
         SecureString.clearmem(dig_key)
         SecureString.clearmem(pl_iv)
         SecureString.clearmem(dg_iv)
+        SecureString.clearmem(padded_length)
         if len(payload) % 16 > 0:
             SecureString.clearmem(padded_payload)
