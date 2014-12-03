@@ -115,6 +115,8 @@ class PyVault(object):
             :return: a :py:class:`PyVaultString` object, holding the
                      the decrypted payload as :py:class:`basestring`.
                      Free memory space after using the payload.
+
+            :raises: :py:class:`ValueError`
         """
         storage = PyVaultStore(self._backend, id)
         return storage.retrieve(str(self._masterkey))

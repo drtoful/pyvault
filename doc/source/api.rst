@@ -14,8 +14,12 @@ Basics
 Backends
 --------
 
+All backends shall at least provide the following interface:
+
 .. autoclass:: pyvault.backends.PyVaultBackend
     :members: create, get_meta, set_meta, retrieve, store
+
+The following backends implement the above interface:
 
 .. autoclass:: pyvault.backends.file.PyVaultFileBackend
     :show-inheritance:
@@ -23,20 +27,17 @@ Backends
 .. autoclass:: pyvault.backends.mongo.PyVaultMongoBackend
     :show-inheritance:
 
+.. autoclass:: pyvault.backends.ptree.PyVaultPairtreeBackend
+    :show-inheritance:
 
 Ciphers
 -------
 
-You can select a specific cipher implementation by using one of the ids
-below. The current list of available implementations follows.
+All Ciphers shall at least provide the following interface:
 
-=======   ============================================
-id        implementation
-=======   ============================================
-aes       :py:class:`~.ciphers.aes.PyVaultCipherAES`
-aescbc    see *aes*
-=======   ============================================
+.. autoclass:: pyvault.ciphers.PyVaultCipher
+    :members: encrypt, decrypt, derive_key
 
- 
+The following ciphers implement the above interface:
 
 .. autoclass:: pyvault.ciphers.aes.PyVaultCipherAES
