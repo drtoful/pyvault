@@ -30,6 +30,9 @@ The following backends implement the above interface:
 .. autoclass:: pyvault.backends.ptree.PyVaultPairtreeBackend
     :show-inheritance:
 
+.. autoclass:: pyvault.backends.sptree.PyVaultShortenedPairtreeBackend
+    :show-inheritance:
+
 Ciphers
 -------
 
