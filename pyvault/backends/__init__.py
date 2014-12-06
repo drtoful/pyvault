@@ -18,7 +18,9 @@ class PyVaultBackend(object):
 
     def get_meta(self):
         """
-            :returns: the meta dictionary for this secure storage
+            :returns: the meta object (as python dictionary)
+                      for this secure storage. See :ref:`meta_object`
+                      as reference for the format.
         """
         pass
 
@@ -28,7 +30,9 @@ class PyVaultBackend(object):
             Should only be called once (when creating a new secure
             storage).
 
-            :param data: a meta dictionary
+            :param data: a meta object (as python dictionary). See
+                         :ref:`meta_object` as reference for the
+                         format.
 
             :raises: :py:class:`ValueError`
         """
@@ -38,7 +42,8 @@ class PyVaultBackend(object):
         """
             :param key: sha512 hexdigest
             :returns: a dictionary previously stored under the same
-                      key
+                      key. See :ref:`data_object` as reference for the
+                      format.
 
             :raises: :py:class:`ValueError`
         """
@@ -47,7 +52,8 @@ class PyVaultBackend(object):
     def store(self, key, data):
         """
             :param key: sha512 hexdigest
-            :param data: dictionary
+            :param data: a dictionary. See :ref:`data_object` as reference
+                         for the format.
 
             :raises: :py:class:`ValueError`
         """

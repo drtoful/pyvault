@@ -4,11 +4,14 @@ API Reference
 Basics
 ------
 
+.. autoclass:: pyvault.string.PyVaultString
+    :members: clear
+
 .. autoclass:: pyvault.PyVaultUnlockError
     :show-inheritance:
 
 .. autoclass:: pyvault.PyVault
-    :members: unlock, lock, is_locked, retrieve, store, create
+    :members: unlock, lock, is_locked, retrieve, store, create, exists
 
 
 Backends
