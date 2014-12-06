@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='pyvault',
-    version='0.2.1',
+    version='0.2.2',
     packages=["pyvault", "pyvault.ciphers", "pyvault.backends"],
     install_requires=[
         'pycrypto >= 2.6',
