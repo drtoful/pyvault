@@ -11,7 +11,7 @@ Basics
     :show-inheritance:
 
 .. autoclass:: pyvault.PyVault
-    :members: unlock, lock, is_locked, retrieve, store, create, exists
+    :members: unlock, lock, is_locked, retrieve, store, create, exists, delete
 
 
 Backends
@@ -20,7 +20,7 @@ Backends
 All backends shall at least provide the following interface:
 
 .. autoclass:: pyvault.backends.PyVaultBackend
-    :members: create, get_meta, set_meta, retrieve, store
+    :members: create, get_meta, set_meta, retrieve, store, delete
 
 The following backends implement the above interface:
 

@@ -59,3 +59,5 @@ class PyVaultMongoBackend(PyVaultBackend):
             upsert=True
         )
 
+    def delete(self, key):
+        self._db.remove({"id": key})

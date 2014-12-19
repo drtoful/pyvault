@@ -65,3 +65,17 @@ class PyVaultFileBackend(PyVaultBackend):
 
         os.chmod(file, 0600)
 
+    def delete(self, key):
+        file = os.path.join(self._path, key)
+        if not os.path.isfile(file):
+            return
+
+        # shredding file with bogus data, so that it can't
+        # be successfully reconstructed
+        for _ in xrange(0, 10):
+            data = os.urandom(512)
+            with open(file, "w") as fp:
+                fp.write(data)
+
+        # now file can be unlinked
+        os.unlink(file)

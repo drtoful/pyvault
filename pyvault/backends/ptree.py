@@ -62,3 +62,14 @@ class PyVaultPairtreeBackend(PyVaultBackend):
     def store(self, key, data):
         obj = self._store.get_object(key, create_if_doesnt_exist=True)
         obj.add_bytestream("data", json.dumps(data))
+
+    def delete(self, key):
+        obj = self._store.get_object(key)
+        if obj:
+            # shred content
+            for _ in xrange(0,10):
+                data = os.urandom(512)
+                obj.add_bytestream("data", data)
+
+            # unlink
+            obj.del_file("data")

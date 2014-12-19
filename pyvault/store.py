@@ -16,6 +16,9 @@ class PyVaultStore(object):
         self._id = hashlib.sha512(str(id)).hexdigest()
         self._backend = backend
 
+    def delete(self):
+        self._backend.delete(self._id)
+
     def retrieve(self, passphrase):
         def retrieve_key(data):
             cipher = cipher_manager.get(data['cipher'])

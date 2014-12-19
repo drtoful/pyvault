@@ -138,6 +138,15 @@ class PyVault(object):
         storage = PyVaultStore(self._backend, id)
         storage.store(str(self._masterkey), payload, cipher, length)
 
+    def delete(self, id):
+        """
+            .. versionadded:: 0.2.3
+
+            :param id: a unique id of which all data is deleted
+        """
+        storage = PyVaultStore(self._backend, id)
+        storage.delete()
+
     def create(self, passphrase, complexity=12, iterations=5000):
         """
             This will create and initialize the encrypted storage. You can

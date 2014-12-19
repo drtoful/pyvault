@@ -58,3 +58,13 @@ class PyVaultBackend(object):
             :raises: :py:class:`ValueError`
         """
         pass
+
+    def delete(self, key):
+        """
+            .. versionadded:: 0.2.3
+
+            delete the associated data to key
+
+            :param key: sha512 hexdigest
+        """
+        pass

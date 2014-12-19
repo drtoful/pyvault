@@ -70,3 +70,14 @@ class PyVaultShortenedPairtreeBackend(PyVaultBackend):
         obj = self._store.get_object(key[:2*self._depth],
             create_if_doesnt_exist=True)
         obj.add_bytestream(key, json.dumps(data))
+
+    def delete(self, key):
+        obj = self._store.get_object(key[:2*self._depth])
+        if obj:
+            # shred content
+            for _ in xrange(0,10):
+                data = os.urandom(512)
+                obj.add_bytestream(key, data)
+
+            # unlink
+            obj.del_file(key)
